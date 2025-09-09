@@ -1,6 +1,4 @@
 pandas
 uuid
 flask
-time
-threading
 serial
