@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'light-gold': '#f6cf9a',
+              'dark-slate': '#474454',
+              'medium-slate': '#76737c',
+              'muted-tan': '#d0bc8f',
+              'terracotta-rose': '#c0786a',
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="bg-muted-tan min-h-screen py-10 px-4">
+
+    <div class="bg-white max-w-3xl mx-auto p-8 rounded-xl shadow-lg">
+
+        {% if box.type == 'parent' %}
+            <div class="bg-light-gold/30 p-6 rounded-lg border border-light-gold mb-8 text-center">
+                <h1 class="text-3xl font-bold text-dark-slate">{{ box.name }}</h1>
+                <p class="text-medium-slate mt-1"><strong>Location:</strong> {{ box.location }}</p>
+            </div>
+
+            <h2 class="text-2xl font-bold text-dark-slate text-center mb-4">Workers in {{ box.name }}</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {% for sub_box in box.sub_boxes %}
+                    <a class="block bg-gray-50 p-4 rounded-lg border border-muted-tan text-center text-dark-slate font-semibold hover:border-terracotta-rose hover:shadow-sm transition-all" href="{{ url_for('details', box_id=sub_box.id, _external=True) }}">
+                        {{ sub_box.name }}
+                    </a>
+                {% else %}
+                    <p class="text-medium-slate text-center sm:col-span-2">No workers added yet. Add one below!</p>
+                {% endfor %}
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-dashed border-muted-tan">
+                <h3 class="text-xl font-bold text-dark-slate text-center mb-4">Add a New Worker</h3>
+                <form class="flex flex-col items-center" method="POST" action="{{ url_for('add_sub_box', parent_box_id=box.id) }}">
+                    <input type="text" name="box_name" placeholder="Enter worker's name" required class="w-full max-w-sm px-3 py-2 text-dark-slate border border-muted-tan rounded-md focus:outline-none focus:ring-2 focus:ring-terracotta-rose">
+                    <button type="submit" class="mt-4 bg-terracotta-rose text-white font-bold py-2 px-6 rounded-lg hover:opacity-90 cursor-pointer transition-opacity duration-300">
+                        Save Worker
+                    </button>
+                </form>
+            </div>
+
+        {% elif box.type == 'sub-box' %}
+            <div class="border border-muted-tan rounded-lg p-6">
+                <h2 class="text-2xl font-bold text-dark-slate text-center">{{ box.name }}</h2>
+                <p class="text-center text-medium-slate text-sm font-mono mb-4">ID: {{ box.id[:12] }}...</p>
+                <hr class="border-muted-tan my-4">
+                <div class="space-y-3">
+                    <p class="flex justify-between items-center text-lg"><span class="text-medium-slate">S1 (MQ2):</span> <span id="sensor-s1" class="font-bold text-dark-slate font-mono text-xl">{{ box.s1 }}</span></p>
+                    <p class="flex justify-between items-center text-lg"><span class="text-medium-slate">S2 (MQ7):</span> <span id="sensor-s2" class="font-bold text-dark-slate font-mono text-xl">{{ box.s2 }}</span></p>
+                    <p class="flex justify-between items-center text-lg"><span class="text-medium-slate">S3 (MQ135):</span> <span id="sensor-s3" class="font-bold text-dark-slate font-mono text-xl">{{ box.s3 }}</span></p>
+                    <p class="flex justify-between items-center text-lg"><span class="text-medium-slate">S4 (FALL):</span> <span id="sensor-s4" class="font-bold text-dark-slate font-mono text-xl">{{ box.s4 }}</span></p>
+                </div>
+                <div class="text-center mt-6">
+                    <a href="{{ url_for('okdata') }}" class="bg-terracotta-rose text-white font-bold py-2 px-6 rounded-lg hover:opacity-90 cursor-pointer transition-opacity duration-300">
+                        Fetch Location
+                    </a>
+                </div>
+            </div>
+
+            <script>
+                function updateSensorValues() {
+                    fetch(`/get_live_com_data`) 
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.error) { console.error('Error fetching data:', data.error); return; }
+                            document.getElementById('sensor-s1').textContent = data.s1.toFixed(2);
+                            document.getElementById('sensor-s2').textContent = data.s2.toFixed(2);
+                            document.getElementById('sensor-s3').textContent = data.s3.toFixed(2);
+                            document.getElementById('sensor-s4').textContent = data.s4;
+                        })
+                        .catch(error => console.error('Network error:', error));
+                }
+                setInterval(updateSensorValues, 2000);
+            </script>
+        {% endif %}
+
+        <div class="text-center mt-8">
+            <a href="{{ url_for('next_page') }}" class="text-terracotta-rose font-semibold hover:underline">Back to Dashboard</a>
+        </div>
+    </div>
+
+</body>
+</html>

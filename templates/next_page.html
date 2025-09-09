@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'light-gold': '#f6cf9a',
+              'dark-slate': '#474454',
+              'medium-slate': '#76737c',
+              'muted-tan': '#d0bc8f',
+              'terracotta-rose': '#c0786a',
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="bg-muted-tan text-dark-slate">
+
+    <div class="container mx-auto px-4 py-8 text-center">
+
+        <h1 class="text-4xl font-bold text-dark-slate">Welcome to your Dashboard, {{ username }}!</h1>
+        <p class="text-medium-slate mt-2">Your unique 6-digit ID is: <strong class="font-semibold text-dark-slate">{{ unique_id }}</strong></p>
+        <p class="text-medium-slate">Save it for future login.</p> 
+
+        <button id="addBtn" class="bg-terracotta-rose text-white font-bold py-2 px-6 rounded-lg hover:opacity-90 cursor-pointer transition-opacity duration-300 my-8 text-lg">
+            Add New Project
+        </button>
+
+        <div id="cardContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            {% for box in boxes %}
+            <a class="block bg-white p-6 rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300" href="{{ url_for('details', box_id=box.id) }}">
+                <span class="text-xl font-bold text-dark-slate">{{ box.name }}</span>
+            </a>
+            {% endfor %}
+        </div>
+
+    </div>
+
+    <div id="modal" class="fixed inset-0 bg-dark-slate bg-opacity-50 hidden items-center justify-center">
+        
+        <form class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md" method="POST" action="{{ url_for('add_box') }}">
+            <h2 class="text-2xl font-bold text-dark-slate mb-4">Add Project Info</h2>
+            
+            <input type="text" id="nameInput" name="box_name" placeholder="Enter name" required class="w-full px-3 py-2 mb-4 text-dark-slate border border-muted-tan rounded-md focus:outline-none focus:ring-2 focus:ring-terracotta-rose">
+            <input type="text" id="locationInput" name="box_location" placeholder="Enter location/landmark" required class="w-full px-3 py-2 mb-6 text-dark-slate border border-muted-tan rounded-md focus:outline-none focus:ring-2 focus:ring-terracotta-rose">
+            
+            <button id="submitBtn" type="submit" class="w-full bg-terracotta-rose text-white font-bold py-2 px-4 rounded-md hover:opacity-90 cursor-pointer transition-opacity duration-300">
+                Add Project
+            </button>
+        </form>
+    </div>
+
+    <script>
+        const addBtn = document.getElementById("addBtn");
+        const modal = document.getElementById("modal");
+
+        addBtn.onclick = () => {
+            modal.style.display = "flex";
+        };
+
+        window.onclick = (e) => {
+            if (e.target == modal) {
+                modal.style.display = "none";
+            }
+        };
+    </script>
+</body>
+</html>

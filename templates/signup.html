@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'light-gold': '#f6cf9a',
+              'dark-slate': '#474454',
+              'medium-slate': '#76737c',
+              'muted-tan': '#d0bc8f',
+              'terracotta-rose': '#c0786a',
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="bg-light-gold flex items-center justify-center min-h-screen">
+
+    <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-sm">
+        
+        <h1 class="text-3xl font-bold text-center text-dark-slate mb-6">Create Account</h1>
+        
+        <form method="post" action="{{ url_for('signup') }}">
+            <div class="mb-4">
+                <label for="signup_username" class="block text-medium-slate text-sm font-bold mb-2">Username</label>
+                <input type="text" name="signup_username" id="signup_username" class="w-full px-3 py-2 text-dark-slate border border-muted-tan rounded-md focus:outline-none focus:ring-2 focus:ring-terracotta-rose">
+            </div>
+
+            <div class="mb-6">
+                <label for="signup_password" class="block text-medium-slate text-sm font-bold mb-2">Password</label>
+                <input type="password" name="signup_password" id="signup_password" class="w-full px-3 py-2 text-dark-slate border border-muted-tan rounded-md focus:outline-none focus:ring-2 focus:ring-terracotta-rose">
+            </div>
+
+            <input type="submit" value="Sign Up" class="w-full bg-terracotta-rose text-white font-bold py-2 px-4 rounded-md hover:opacity-90 cursor-pointer transition-opacity duration-300">
+        </form>
+
+        <p class="text-center text-medium-slate text-sm mt-6">
+            Already have an account? 
+            <a href="{{ url_for('login') }}" class="text-terracotta-rose font-bold hover:underline">Login here</a>
+        </p>
+
+        {% if error %}
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md relative mt-4" role="alert">
+            <span class="block sm:inline">{{ error }}</span>
+        </div>
+        {% endif %}
+
+    </div>
+
+</body>
+</html>

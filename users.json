@@ -1,0 +1,18 @@
+[
+    {
+        "unique_id":891049,
+        "username":"YATHARTH",
+        "password":"aaa",
+        "boxes":[
+            {
+                "id":"2e8df3f7-c060-45d0-a5e0-b21bc0d50476",
+                "name":"M1",
+                "location":"near my house ",
+                "sub_boxes":[
+
+                ],
+                "type":"parent"
+            }
+        ]
+    }
+]
