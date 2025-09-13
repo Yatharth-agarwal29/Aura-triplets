@@ -61,7 +61,7 @@ Clone the Repository:
 
   You can also reffer this post :
   
-  linkedin :- https://www.linkedin.com/posts/yatharth-agarwal-77b281288_we-are-beyond-excited-to-share-that-our-activity-7372655149724528640-p87zutm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAEXOqw8BDpOtoQZDnd1G1obVvbdPEMbv8FA
+  linkedin :- (https://www.linkedin.com/posts/yatharth-agarwal-77b281288_we-are-beyond-excited-to-share-that-our-activity-7372655149724528640-p87z/?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAEXOqw8BDpOtoQZDnd1G1obVvbdPEMbv8FA)
 
 Install Dependencies:
   pip install -r requirements.txt
